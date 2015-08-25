@@ -1,0 +1,5 @@
+{% extends 'mainBundle:Main:layout.html.twig' %}
+
+{% block body %}
+        <h1>Bienvenue {{name}} </h1>
+{% endblock %}
