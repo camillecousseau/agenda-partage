@@ -1,0 +1,9 @@
+Hello !
+
+Voici les salles :
+
+{{ ma_salle.nom }}
+
+Voici les réservations :
+
+{{ ma_reservation.nom }}

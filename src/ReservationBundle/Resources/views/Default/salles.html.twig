@@ -1,0 +1,27 @@
+{% extends 'mainBundle:Main:layout.html.twig' %}
+
+{% block title %}Liste des salles - Gestion Réservation{% endblock %}
+
+{% block menu %}salle{% endblock %}
+
+{% block body %}
+<h1 class="text-center">Liste des salles </h1>
+
+<table class="table table-bordered text-center">
+	<th>Nom</th>
+	<th>Description</th>
+	<th>Capacite</th>
+	<th></th>
+	<th></th>
+	
+	{% for salle in les_salles %}
+		<tr>
+			<td> {{ salle.nom }} </td>
+			<td> {{ salle.description }} </td>
+			<td> {{ salle.capacite }} </td>
+			<td> <a href="{{ path('reservationbundle_voir', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info">Voir</button></a> </td>
+			<td> <a href="" ><button type="button" class="btn btn-primary">Réserver</button></a> </td>
+		</tr>
+	{% endfor %}
+</table>
+{% endblock %}
