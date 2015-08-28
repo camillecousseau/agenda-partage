@@ -7,10 +7,13 @@
 {% block body %}
 <h1 class="text-center">Liste des salles </h1>
 
+<a href="{{ path('reservationbundle_ajouter') }}" /><button type="button" class="btn btn-success">Ajouter une salle</button></a> </td>
+
 <table class="table table-bordered text-center">
 	<th>Nom</th>
 	<th>Description</th>
 	<th>Capacite</th>
+	<th>Image</th>
 	<th></th>
 	<th></th>
 	
@@ -19,6 +22,7 @@
 			<td> {{ salle.nom }} </td>
 			<td> {{ salle.description }} </td>
 			<td> {{ salle.capacite }} </td>
+			<td> {{ salle.image }} </td>
 			<td> <a href="{{ path('reservationbundle_voir', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info">Voir</button></a> </td>
 			<td> <a href="" ><button type="button" class="btn btn-primary">Réserver</button></a> </td>
 		</tr>

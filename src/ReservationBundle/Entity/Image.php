@@ -34,6 +34,11 @@ class Image
      * @ORM\Column(name="alt", type="string", length=255)
      */
     private $alt;
+    
+    public function __tostring() {
+		
+		return $this->alt;
+	}
 
 
     /**

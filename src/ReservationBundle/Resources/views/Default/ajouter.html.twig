@@ -1,0 +1,30 @@
+{% extends 'mainBundle:Main:layout.html.twig' %}
+
+{% block title %}Réserver une salle - Gestion Réservation{% endblock %}
+
+{% block menu %}salles{% endblock %}
+
+{% block body %}
+<h1 class="text-center">Ajouter une salle</h1>
+
+{#{ form(formulaire_salle) }#}
+
+<div class="center-block">
+{{ form_start(formulaire_salle) }}
+	<div class="form-group">
+		<label class="col-sm-2">Nom</label>
+		{{ form_widget(formulaire_salle.nom) }}
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2">Description</label>
+		{{ form_widget(formulaire_salle.description) }}
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2">Capacite</label>
+		{{ form_widget(formulaire_salle.capacite) }}
+	</div>
+	
+{{ form_end(formulaire_salle) }}
+</div>
+
+{% endblock %}

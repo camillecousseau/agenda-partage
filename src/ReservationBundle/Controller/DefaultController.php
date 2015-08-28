@@ -5,9 +5,14 @@ namespace ReservationBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
+use Symfony\Component\HttpFoundation\Request;
 
 use ReservationBundle\Entity\Reservation;
 use ReservationBundle\Entity\Salle;
+use ReservationBundle\Form\SalleType;
+use ReservationBundle\Form\ReservationType;
 
 class DefaultController extends Controller
 {
@@ -96,10 +101,82 @@ class DefaultController extends Controller
      * @Route("/reserver", name="reservationbundle_reserver")
      * @Template()
      */
-    public function reserverAction()
+    public function reserverAction(Request $request)
     {		
-		$em = $this->getDoctrine()->getManager();		
 		
-        return array();
+		$reservation = new Reservation();	
+		
+		$form = $this->createForm(
+			new ReservationType(),
+			$reservation,
+			array(
+				'action' => $this->generateUrl('reservationbundle_reserverOk')
+			)
+		);
+							
+        return array(
+			'formulaire_reservation' => $form->createView()
+		);
     }
+    
+    /**
+     * @Route("/salles/ajouter", name="reservationbundle_ajouter")
+     * @Template()
+     */
+    public function ajouterAction(Request $request)
+    {		
+		
+		$salle = new Salle();	
+		
+		$form = $this->createForm(
+			new SalleType(),
+			$salle,
+			array()
+		);
+		
+		$form->handleRequest($request);
+		
+		if($form->isValid())
+		{
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($salle);
+			$em->flush();
+			
+			return $this->redirect($this->generateUrl('reservationbundle_salles'));
+		}
+					
+        return array(
+			'formulaire_salle' => $form->createView()
+		);
+    }
+    
+    /**
+     * 
+     * @Route("/reserver/OK", name="reservationbundle_reserverOk")
+     * @Template() 
+     * @Method("post")
+     */
+     
+     public function okAction(Request $request)
+     {
+		 $reservation = new Reservation();	
+		
+		$form = $this->createForm(
+			new ReservationType(),
+			$reservation,
+			array()
+		);
+		
+		$form->handleRequest($request);
+		
+		if($form->isValid())
+		{
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($reservation);
+			$em->flush();
+			
+		}
+					
+        return array();
+	 }
 }

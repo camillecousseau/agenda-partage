@@ -18,8 +18,8 @@
 		<tr>
 			<td> {{ resa.nom }} </td>
 			<td> {{ resa.mail }} </td>
-			<td> {{ resa.dateDebut }} </td>
-			<td> {{ resa.dateFin }} </td>
+			<td> {{ resa.dateDebut | date('d/m/Y H:i') }} </td>
+			<td> {{ resa.dateFin | date('d/m/Y H:i')  }} </td>
 			<td> {{ resa.salle.nom }} </td>
 	{% endfor %}
 </table>
