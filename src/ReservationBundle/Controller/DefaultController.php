@@ -136,6 +136,83 @@ class DefaultController extends Controller
     }
     
     
+    /**
+    * Creates a form to edit a Salle entity.
+    *
+    * @param Salle $entity The entity
+    *
+    * @return \Symfony\Component\Form\Form The form
+    */
+    private function createEditForm(Salle $entity)
+    {
+        $form = $this->createForm(new SalleType(), $entity, array(
+            'action' => $this->generateUrl('reservationbundle_update', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Modifier'));
+
+        return $form;
+    }
+    
+    
+    //  MAJ Salle
+    /**
+     * @Route("/{id}", name="reservationbundle_update")
+     * @Method("PUT")
+     * @Template("ReservationBundle:Salle:edit.html.twig")
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('ReservationBundle:Salle')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Salle entity.');
+        }
+
+        $editForm = $this->createEditForm($entity);
+        $editForm->handleRequest($request);
+        
+        if($editForm->isValid()) {
+			
+			$entity->getImage()->upload();
+			$em->flush();
+			
+			return $this->redirect($this->generateUrl('reservationbundle_edit', array('id' => $id)));
+		}
+
+        return array(
+            'salle'      => $entity,
+            'edit_form'   => $editForm->createView(),
+        );
+    }
+    
+    /**
+     * @Route("{id}/edit", name="reservationbundle_edit")
+     * @Method("GET")
+     * @Template()
+     */
+    public function editAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('ReservationBundle:Salle')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find Salle entity.');
+        }
+
+        $editForm = $this->createEditForm($entity);
+
+        return array(
+            'salle'      => $entity,
+            'edit_form'   => $editForm->createView(),
+        );
+    }
+    
+    
     // Vue RESERVATIONS
     /**
      * @Route("/reservations", name="reservationbundle_reservations")
@@ -253,5 +330,28 @@ class DefaultController extends Controller
         return array(
 			'formulaire_reservation' => $form->createView()
 		);
+    }
+    
+    
+    // SUPPRESSION reservation
+    /**
+     * @Route("/reservations/suppression/{id}", name="reservationbundle_supprimerResa", requirements={"id"="\d+"})
+     * @Template()
+     */
+    public function supprimerResaAction($id)
+    {		
+		$em = $this->getDoctrine()->getManager();
+		$repoResas = $em->getRepository('ReservationBundle:Reservation');
+		
+		$resa = $repoResas->findOneById($id);
+
+		if(!$resa) {
+			throw $this->createNotFoundException('La reservation avec l\'id '.$id.' n\'existe pas...');
+		}
+		
+        $em->remove($resa);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('reservationbundle_reservations'));
     }
 }

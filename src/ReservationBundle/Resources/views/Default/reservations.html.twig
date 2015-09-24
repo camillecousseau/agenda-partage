@@ -13,6 +13,7 @@
 	<th>Date et heure de debut</th>
 	<th>Date et heure de fin</th>
 	<th>Salle</th>
+	<th> </th>
 	
 	{% for resa in les_resas %}
 		<tr>
@@ -21,6 +22,7 @@
 			<td> {{ resa.dateDebut | date('d/m/Y H:i') }} </td>
 			<td> {{ resa.dateFin | date('d/m/Y H:i')  }} </td>
 			<td> {{ resa.salle.nom }} </td>
+			<td> <a href="{{ path('reservationbundle_supprimerResa', {'id' : resa.id}) }}" /><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></a> </td>
 	{% endfor %}
 </table>
 {% endblock %}

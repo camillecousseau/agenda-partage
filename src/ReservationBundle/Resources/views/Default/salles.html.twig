@@ -21,6 +21,7 @@
 	<th></th>
 	<th></th>
 	<th></th>
+	<th></th>
 	
 	{% for salle in les_salles %}
 		<tr>
@@ -32,6 +33,7 @@
 				 {% endif %}
 			</td>
 			<td> <a href="{{ path('reservationbundle_voir', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></button></a> </td>
+			<td> <a href="{{ path('reservationbundle_edit', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> Modifier</button></a> </td>
 			<td> <a href="{{ path('reservationbundle_reserverSalle', {'id' : salle.id}) }}"  ><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-calendar"></span> Réserver</button></a> </td>
 			<td> <a href="{{ path('reservationbundle_supprimer', {'id' : salle.id}) }}" /><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></a> </td>
 		</tr>
