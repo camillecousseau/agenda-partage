@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ImageType extends AbstractType
+class resaSalleType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,8 +15,11 @@ class ImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('alt')
-            ->add('file')
+            ->add('nom', 'text')
+			->add('mail', 'text')
+			->add('dateDebut', 'datetime', array('widget' => 'single_text'))	
+			->add('dateFin', 'datetime', array('widget' => 'single_text'))
+            ->add('ajouter', 'submit');
         ;
     }
     
@@ -26,7 +29,7 @@ class ImageType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'ReservationBundle\Entity\Image'
+            'data_class' => 'ReservationBundle\Entity\Reservation'
         ));
     }
 
@@ -35,6 +38,6 @@ class ImageType extends AbstractType
      */
     public function getName()
     {
-        return 'reservationbundle_image';
+        return 'reservationbundle_reservation';
     }
 }

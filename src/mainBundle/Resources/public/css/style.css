@@ -1,4 +1,17 @@
 body {
   min-height: 2000px;
   padding-top: 70px;
+  background: url('../images/binding-light.png') repeat;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.table {
+	width:90%;
+	margin-right:5%;
+	margin-left:5%;
+	background:linear-gradient(to bottom, #FFF 0px, #F8F8F8 100%);
+}
+
+th {
+	background: linear-gradient(to bottom, #DBDBDB 0px, #E2E2E2 100%);
 }

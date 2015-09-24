@@ -7,7 +7,11 @@
 {% block body %}
 <h1 class="text-center">Liste des salles </h1>
 
-<a href="{{ path('reservationbundle_ajouter') }}" /><button type="button" class="btn btn-success">Ajouter une salle</button></a> </td>
+<h2 class="text-center">
+	<a href="{{ path('reservationbundle_ajouter') }}" />
+		<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Ajouter une salle</button>
+	</a>
+</h2>
 
 <table class="table table-bordered text-center">
 	<th>Nom</th>
@@ -16,15 +20,20 @@
 	<th>Image</th>
 	<th></th>
 	<th></th>
+	<th></th>
 	
 	{% for salle in les_salles %}
 		<tr>
 			<td> {{ salle.nom }} </td>
 			<td> {{ salle.description }} </td>
 			<td> {{ salle.capacite }} </td>
-			<td> {{ salle.image }} </td>
-			<td> <a href="{{ path('reservationbundle_voir', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info">Voir</button></a> </td>
-			<td> <a href="" ><button type="button" class="btn btn-primary">Réserver</button></a> </td>
+			<td> {% if salle.image is not null %}
+				<img src="{{salle.image.getWebPath}}" />
+				 {% endif %}
+			</td>
+			<td> <a href="{{ path('reservationbundle_voir', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></button></a> </td>
+			<td> <a href="{{ path('reservationbundle_reserverSalle', {'id' : salle.id}) }}"  ><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-calendar"></span> Réserver</button></a> </td>
+			<td> <a href="{{ path('reservationbundle_supprimer', {'id' : salle.id}) }}" /><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></a> </td>
 		</tr>
 	{% endfor %}
 </table>

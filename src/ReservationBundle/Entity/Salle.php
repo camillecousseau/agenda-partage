@@ -44,7 +44,7 @@ class Salle
     private $capacite;
     
     /**
-     * @ORM\OneToMany(targetEntity="ReservationBundle\Entity\Reservation", mappedBy="salle")
+     * @ORM\OneToMany(targetEntity="ReservationBundle\Entity\Reservation", mappedBy="salle", cascade={"remove"})
      */
      private $reservations;
      

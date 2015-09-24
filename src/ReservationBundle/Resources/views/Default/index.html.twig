@@ -5,10 +5,42 @@
 {% block menu %}index{% endblock %}
 
 {% block body %}
-<h1 class="text-center">Sytème de gestion des réservations de salles</h1>
+<script>
+			$(document).ready(function() {
+			// FullCalendar
+			var options = {
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month,agendaWeek,agendaDay'
+				},
+				events: [
+					{% for event in events %}
+						{
+						title: '{{ event.salle.nom }} - {{ event.nom }}',
+						start: '{{ event.dateDebut | date('Y-m-d\\TH:i:s') }}',
+						end: '{{ event.dateFin | date('Y-m-d\\TH:i:s')  }}',
+						backgroundColor: '#C96F51'
+						},
+					{% endfor %}
+				],
+				color: 'red',
+				textColor: 'red',
+				timeFormat: 'H:mm'
+			};
+			$('#calendar').fullCalendar(options)
 
-<a href="" ><button type="button" class="btn btn-primary">Réserver</button></a> 
+			});
+</script>
 
-<p>Aujourd'hui, {{ "now"|date("j M Y") }}</p>
+<h1 class="text-center">Système de gestion des réservations de salles</h1>
+
+<h2 class="text-center">
+	<a href="{{ path('reservationbundle_reserver') }}" >
+		<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-calendar"></span> Réserver</button>
+	</a>
+</h2> 
+
+<div id='calendar'></div>
 
 {% endblock %}

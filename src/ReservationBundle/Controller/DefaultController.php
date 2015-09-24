@@ -13,37 +13,31 @@ use ReservationBundle\Entity\Reservation;
 use ReservationBundle\Entity\Salle;
 use ReservationBundle\Form\SalleType;
 use ReservationBundle\Form\ReservationType;
+use ReservationBundle\Form\resaSalleType;
 
 class DefaultController extends Controller
 {
+	
+	// Index
     /**
      * @Route("/home", name="reservationbundle_index")
      * @Template()
      */
     public function indexAction()
     {
-		/*$em = $this->getDoctrine()->getManager();*/
+		$em = $this->getDoctrine()->getManager();
 		
-		$salle1 = new Salle();
-		$salle1->setNom('Salle1');
-		$salle2 = new Salle();
-		$salle2->setNom('Salle2');
+		$repoResas = $em->getRepository('ReservationBundle:Reservation');
 		
-		$resa = new Reservation();
-		$resa->setNom('Reservation1');
-		$resa->setSalle($salle1);
-		
-		/*$em->persist($salle1);
-		$em->persist($salle2);
-		$em->persist($resa);
-		
-		$em->flush();*/
+		$events = $repoResas->findall();
 		
         return array(
-				'ma_reservation' => $resa,
+				'events' => $events,
 		);
     }
     
+    
+    // Vue SALLES
     /**
      * @Route("/salles", name="reservationbundle_salles")
      * @Template()
@@ -60,6 +54,8 @@ class DefaultController extends Controller
 		);
     }
     
+    
+    // Vue SALLE choisie
     /**
      * @Route("/salles/{id}", name="reservationbundle_voir", requirements={"id"="\d+"})
      * @Template()
@@ -70,7 +66,6 @@ class DefaultController extends Controller
 		$repoSalles = $em->getRepository('ReservationBundle:Salle');
 		
 		$salle = $repoSalles->findOneById($id);
-		dump($salle);
 
 		if(!$salle) {
 			throw $this->createNotFoundException('La salle avec l\'id '.$id.' n\'existe pas...');
@@ -81,44 +76,8 @@ class DefaultController extends Controller
 		);
     }
     
-    /**
-     * @Route("/reservations", name="reservationbundle_reservations")
-     * @Template()
-     */
-    public function reservationsAction()
-    {		
-        $em = $this->getDoctrine()->getManager();
-		$repoResas = $em->getRepository('ReservationBundle:Reservation');
-		
-		$resas = $repoResas->findall();
-
-        return array(
-			'les_resas' => $resas,
-		);
-    }
     
-    /**
-     * @Route("/reserver", name="reservationbundle_reserver")
-     * @Template()
-     */
-    public function reserverAction(Request $request)
-    {		
-		
-		$reservation = new Reservation();	
-		
-		$form = $this->createForm(
-			new ReservationType(),
-			$reservation,
-			array(
-				'action' => $this->generateUrl('reservationbundle_reserverOk')
-			)
-		);
-							
-        return array(
-			'formulaire_reservation' => $form->createView()
-		);
-    }
-    
+    // Formulaire AJOUTER salle
     /**
      * @Route("/salles/ajouter", name="reservationbundle_ajouter")
      * @Template()
@@ -139,6 +98,9 @@ class DefaultController extends Controller
 		if($form->isValid())
 		{
 			$em = $this->getDoctrine()->getManager();
+			
+			$salle->getImage()->upload();
+			
 			$em->persist($salle);
 			$em->flush();
 			
@@ -150,16 +112,57 @@ class DefaultController extends Controller
 		);
     }
     
+    
+    // SUPPRESSION salle
     /**
-     * 
-     * @Route("/reserver/OK", name="reservationbundle_reserverOk")
-     * @Template() 
-     * @Method("post")
+     * @Route("/salles/suppression/{id}", name="reservationbundle_supprimer", requirements={"id"="\d+"})
+     * @Template()
      */
-     
-     public function okAction(Request $request)
-     {
-		 $reservation = new Reservation();	
+    public function supprimerAction($id)
+    {		
+		$em = $this->getDoctrine()->getManager();
+		$repoSalles = $em->getRepository('ReservationBundle:Salle');
+		
+		$salle = $repoSalles->findOneById($id);
+
+		if(!$salle) {
+			throw $this->createNotFoundException('La salle avec l\'id '.$id.' n\'existe pas...');
+		}
+		
+        $em->remove($salle);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('reservationbundle_salles'));
+    }
+    
+    
+    // Vue RESERVATIONS
+    /**
+     * @Route("/reservations", name="reservationbundle_reservations")
+     * @Template()
+     */
+    public function reservationsAction()
+    {		
+        $em = $this->getDoctrine()->getManager();
+		$repoResas = $em->getRepository('ReservationBundle:Reservation');
+		
+		$resas = $repoResas->findall();
+
+        return array(
+			'les_resas' => $resas,
+		);
+    }
+    
+    
+    //Formulaire RESERVER
+    /**
+     * @Route("/reserver", name="reservationbundle_reserver")
+     * @Template()
+     */
+    public function reserverAction(Request $request)
+    {		
+		
+		$reservation = new Reservation();	
 		
 		$form = $this->createForm(
 			new ReservationType(),
@@ -172,11 +175,83 @@ class DefaultController extends Controller
 		if($form->isValid())
 		{
 			$em = $this->getDoctrine()->getManager();
+			
+			$salle = $reservation->getSalle();
+			$dateD = $reservation->getDateDebut();
+			$dateF = $reservation->getDateFin();
+			
+			$resas = $salle->getReservations();
+			
+			$ok = $resas->count() > 0 ? false : true;
+			
+			foreach($resas as $resa) {
+				if($dateD < $resa->getDateDebut() && $dateF < $resa->getDateDebut()) {
+					$ok = true;
+				}
+				if($dateD > $resa->getDateFin() && $dateF > $resa->getDateFin()) {
+					$ok = true;
+				}
+			}
+			
+			if($ok == true && $dateD < $dateF) {
+				
 			$em->persist($reservation);
 			$em->flush();
 			
+			return $this->redirect($this->generateUrl('reservationbundle_reservations'));
+			
+			}
+			else {
+				
+				$this->get('session')->getFlashBag()->add(
+            'attention',
+            'Impossible d\'effectuer une réservation de cette salle pour cette date et ces horaires...'
+			);
+			
+			}
+			
 		}
-					
-        return array();
-	 }
+							
+        return array(
+			'formulaire_reservation' => $form->createView()
+		);
+    }
+    
+    
+    //Formulaire RESERVER salle choisie
+    /**
+     * @Route("/reserver/{id}", name="reservationbundle_reserverSalle")
+     * @Template()
+     */
+    public function reserverSalleAction(Request $request, $id)
+    {		
+		
+		$reservation = new Reservation();
+		
+		$em = $this->getDoctrine()->getManager();
+		$repoSalles = $em->getRepository('ReservationBundle:Salle');
+		
+		$salle = $repoSalles->findOneById($id);	
+		
+		$reservation->setSalle($salle);
+		
+		$form = $this->createForm(
+			new resaSalleType(),
+			$reservation,
+			array()
+		);
+		
+		$form->handleRequest($request);
+		
+		if($form->isValid())
+		{
+			$em = $this->getDoctrine()->getManager();			
+			$em->persist($reservation);
+			$em->flush();			
+		}
+							
+        return array(
+			'formulaire_reservation' => $form->createView()
+		);
+    }
 }

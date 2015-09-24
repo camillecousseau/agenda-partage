@@ -3,5 +3,10 @@
 {% block title %}Détails salle - Gestion Réservation{% endblock %}
 
 {% block body %}
-<h1>{{la_salle}}</h1>
+<h1>{{la_salle.nom}}</h1>
+<p>{{la_salle.description}}</p>
+<p>Capacité : {{la_salle.capacite}} personnes</p>
+{% if la_salle.image is not null %}
+<img src="{{la_salle.image.getWebPath}}" />
+{% endif %}
 {% endblock %}
