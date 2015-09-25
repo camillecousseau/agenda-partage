@@ -15,27 +15,27 @@
 
 {#{ form(formulaire_reservation) }#}
 
-<div class="center-block">
+<div class="center-block col-xs-12 col-lg-12">
 {{ form_start(formulaire_reservation) }}
 	<div class="form-group">
-		<label class="col-sm-2">Nom</label>
+		<label class="col-sm-3">Nom</label>
 		{{ form_widget(formulaire_reservation.nom) }}
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2">Mail</label>
+		<label class="col-sm-3">Mail</label>
 		{{ form_widget(formulaire_reservation.mail) }}
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2">Début</label>
+		<label class="col-sm-3">Début</label>
 		{{ form_widget(formulaire_reservation.dateDebut) }}
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2">Fin</label>
+		<label class="col-sm-3">Fin</label>
 		{{ form_widget(formulaire_reservation.dateFin) }}
 	</div>
 	
 	<div class="form-group">
-		<label class="col-sm-2">Salle à réserver</label>
+		<label class="col-sm-3">Salle à réserver</label>
 		{{ form_widget(formulaire_reservation.salle) }}
 	</div>
 	

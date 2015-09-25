@@ -1,12 +1,22 @@
 {% extends 'mainBundle:Main:layout.html.twig' %}
 
-{% block title %}Détails salle - Gestion Réservation{% endblock %}
+{% block title %}Détails {{la_salle.nom}} - Gestion Réservation{% endblock %}
 
 {% block body %}
-<h1>{{la_salle.nom}}</h1>
-<p>{{la_salle.description}}</p>
-<p>Capacité : {{la_salle.capacite}} personnes</p>
-{% if la_salle.image is not null %}
-<img src="{{la_salle.image.getWebPath}}" />
-{% endif %}
+	<div class="col-xs-12 col-lg-12">
+		<h1>{{la_salle.nom}}</h1>
+	</div>
+	<div class="col-xs-6 col-lg-6">
+		{% if la_salle.image is not null %}
+			<img src="{{la_salle.image.getWebPath}}" />
+		{% endif %}
+	</div>
+	<div class="col-xs-6 col-lg-6">
+		<p>{{la_salle.description}}</p>
+		<p>Capacité : {{la_salle.capacite}} personnes</p>
+	</div>
+	<div class="col-xs-12 col-lg-12">
+		<a href="{{ path('reservationbundle_salles') }}" /><button type="button" class="btn btn-info">Retour à la liste</button></a>
+		<a href="{{ path('reservationbundle_reserverSalle', {'id' : la_salle.id}) }}"  ><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-calendar"></span> Réserver</button></a>
+	</div>
 {% endblock %}

@@ -12,19 +12,27 @@
 <div class="center-block">
 {{ form_start(formulaire_salle) }}
 	<div class="form-group">
-		<label class="col-sm-2">Nom</label>
+		<label class="col-sm-3">Nom</label>
 		{{ form_widget(formulaire_salle.nom) }}
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2">Description</label>
+		<label class="col-sm-3">Description</label>
 		{{ form_widget(formulaire_salle.description) }}
 	</div>
 	<div class="form-group">
-		<label class="col-sm-2">Capacite</label>
+		<label class="col-sm-3">Capacite</label>
 		{{ form_widget(formulaire_salle.capacite) }}
 	</div>
+	<div class="form-group">
+		<label class="col-sm-3">Image</label>
+		{{ form_widget(formulaire_salle.image) }}
+	</div>
+	
+	{{ form_widget(formulaire_salle.submit) }}
 	
 {{ form_end(formulaire_salle) }}
 </div>
+
+<a href="{{ path('reservationbundle_salles') }}" /><button type="button" class="btn btn-info">Retour à la liste</button></a>
 
 {% endblock %}

@@ -13,30 +13,25 @@
 	</a>
 </h2>
 
-<table class="table table-bordered text-center">
-	<th>Nom</th>
-	<th>Description</th>
-	<th>Capacite</th>
-	<th>Image</th>
-	<th></th>
-	<th></th>
-	<th></th>
-	<th></th>
+<div class="container">
+    <div id="products" class="row list-group">
 	
 	{% for salle in les_salles %}
-		<tr>
-			<td> {{ salle.nom }} </td>
-			<td> {{ salle.description }} </td>
-			<td> {{ salle.capacite }} </td>
-			<td> {% if salle.image is not null %}
+		<div class="item  col-xs-6 col-lg-6">
+			<div class="thumbnail">
+				{% if salle.image is not null %}
 				<img src="{{salle.image.getWebPath}}" />
 				 {% endif %}
-			</td>
-			<td> <a href="{{ path('reservationbundle_voir', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></button></a> </td>
+			</div>
+			<h2> {{ salle.nom }} </h2>
+			<i> {{ salle.capacite }} personnes</i>
+			<p> {{ salle.description }} </p>			
+			<td> <a href="{{ path('reservationbundle_voir', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> Voir</button></a> </td>
 			<td> <a href="{{ path('reservationbundle_edit', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> Modifier</button></a> </td>
 			<td> <a href="{{ path('reservationbundle_reserverSalle', {'id' : salle.id}) }}"  ><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-calendar"></span> Réserver</button></a> </td>
 			<td> <a href="{{ path('reservationbundle_supprimer', {'id' : salle.id}) }}" /><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></a> </td>
-		</tr>
+		</div>
 	{% endfor %}
-</table>
+	</div>
+</div>
 {% endblock %}

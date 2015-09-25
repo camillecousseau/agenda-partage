@@ -93,6 +93,8 @@ class DefaultController extends Controller
 			array()
 		);
 		
+		$form->add('submit', 'submit', array('label' => 'Ajouter'));
+		
 		$form->handleRequest($request);
 		
 		if($form->isValid())
@@ -322,9 +324,38 @@ class DefaultController extends Controller
 		
 		if($form->isValid())
 		{
-			$em = $this->getDoctrine()->getManager();			
+			$em = $this->getDoctrine()->getManager();	
+			
+			$dateD = $reservation->getDateDebut();
+			$dateF = $reservation->getDateFin();
+			
+			$resas = $salle->getReservations();
+			
+			$ok = $resas->count() > 0 ? false : true;
+			
+			foreach($resas as $resa) {
+				if($dateD < $resa->getDateDebut() && $dateF < $resa->getDateDebut()) {
+					$ok = true;
+				}
+				if($dateD > $resa->getDateFin() && $dateF > $resa->getDateFin()) {
+					$ok = true;
+				}
+			}
+			
+			if($ok == true && $dateD < $dateF) {
+					
 			$em->persist($reservation);
-			$em->flush();			
+			$em->flush();
+			
+			return $this->redirect($this->generateUrl('reservationbundle_salles'));	
+			}
+			else {
+				
+				$this->get('session')->getFlashBag()->add(
+            'attention_resa',
+            'Impossible d\'effectuer une réservation de la salle pour cette date et ces horaires...'
+			);		
+			}
 		}
 							
         return array(

@@ -20,8 +20,7 @@ class SalleType extends AbstractType
             ->add('nom', 'text')
 			->add('description', 'text')
 			->add('capacite', 'integer')
-			->add('image', new ImageType())	
-			->add('ajouter', 'submit');
+			->add('image', new ImageType())
         ;
     }
     

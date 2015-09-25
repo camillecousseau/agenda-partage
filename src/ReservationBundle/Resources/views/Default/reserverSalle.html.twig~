@@ -7,12 +7,6 @@
 {% block body %}
 <h1 class="text-center">Réserver une salle</h1>
 
-{% for flashMessage in app.session.flashbag.get('attention_resa') %}
-    <div class="flash-notice">
-        {{ flashMessage }}
-    </div>
-{% endfor %}
-
 {#{ form(formulaire_reservation) }#}
 
 <div class="center-block">
@@ -37,7 +31,5 @@
 	{{ form_widget(formulaire_reservation.ajouter) }}
 {{ form_end(formulaire_reservation) }}
 </div>
-
-<a href="{{ path('reservationbundle_salles') }}" /><button type="button" class="btn btn-info">Retour à la liste</button></a>
 
 {% endblock %}

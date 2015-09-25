@@ -1,21 +1,38 @@
 {% extends 'mainBundle:Main:layout.html.twig' %}
 
-{% block title %}Modifier une salle - Gestion Réservation{% endblock %}
+{% block title %}Modifier {{ salle.nom }} - Gestion Réservation{% endblock %}
 
 {% block body -%}
     <h1>Modifier une salle</h1>
 
-    {{ form(edit_form) }}
+    {#{ form(edit_form) }#}
     
-    {% if salle.image is not null %}
-		<img src="{{ salle.image.getWebPath }}" />
-	{% endif %}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('reservationbundle_salles') }}">
-            Retour à la liste
-        </a>
-    </li>
-</ul>
+    <div class="center-block">
+		{{ form_start(edit_form) }}
+			
+			<div class="form-group">
+				<label class="col-sm-2">Nom</label>
+				{{ form_widget(edit_form.nom) }}
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2">Description</label>
+				{{ form_widget(edit_form.description) }}
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2">Capacite</label>
+				{{ form_widget(edit_form.capacite) }}
+			</div>
+			{% if salle.image is not null %}
+				<img src="{{ salle.image.getWebPath }}" />
+			{% endif %}
+			<div class="form-group">
+				<label class="col-sm-2">Image</label>
+				{{ form_widget(edit_form.image) }}
+			</div>
+			
+			{{ form_widget(edit_form.submit) }}
+	
+		{{ form_end(edit_form) }}
+	</div>
+	<a href="{{ path('reservationbundle_salles') }}" /><button type="button" class="btn btn-info">Retour à la liste</button></a>
 {% endblock %}

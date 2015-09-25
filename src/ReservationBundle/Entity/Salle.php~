@@ -44,13 +44,13 @@ class Salle
     private $capacite;
     
     /**
-     * @ORM\OneToMany(targetEntity="ReservationBundle\Entity\Reservation", mappedBy="salle")
+     * @ORM\OneToMany(targetEntity="ReservationBundle\Entity\Reservation", mappedBy="salle", cascade={"remove"})
      */
      private $reservations;
      
      /**
      * 
-     * @ORM\OneToOne(targetEntity="ReservationBundle\Entity\Image")
+     * @ORM\OneToOne(targetEntity="ReservationBundle\Entity\Image", cascade={"persist"}))
      * 
      */
     private $image;
@@ -58,6 +58,11 @@ class Salle
      public function __construct()
      {
 		$this->reservations = new ArrayCollection();
+	 }
+	 
+	 public function __toString()
+	 {
+		 return $this->nom;
 	 }
 
 
