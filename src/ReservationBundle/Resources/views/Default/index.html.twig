@@ -17,11 +17,11 @@
 				events: [
 					{% for event in events %}
 						{
-						title: '{{ event.salle.nom }} - {{ event.nom }}',
+						title: '{{ event.nom }} - {{ event.salle.nom }}',
 						start: '{{ event.dateDebut | date('Y-m-d\\TH:i:s') }}',
 						end: '{{ event.dateFin | date('Y-m-d\\TH:i:s')  }}',
 						backgroundColor: '#C96F51',
-						tip: '{{ event.salle.nom }} - {{ event.nom }}',
+						tip: '{{ event.nom }} - {{ event.salle.nom }}',
 						},
 					{% endfor %}
 				],
