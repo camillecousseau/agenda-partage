@@ -20,10 +20,14 @@
 						title: '{{ event.salle.nom }} - {{ event.nom }}',
 						start: '{{ event.dateDebut | date('Y-m-d\\TH:i:s') }}',
 						end: '{{ event.dateFin | date('Y-m-d\\TH:i:s')  }}',
-						backgroundColor: '#C96F51'
+						backgroundColor: '#C96F51',
+						tip: '{{ event.salle.nom }} - {{ event.nom }}',
 						},
 					{% endfor %}
 				],
+				eventRender: function(event, element) {
+					element.attr('title', event.tip);
+				},
 				color: 'red',
 				textColor: 'red',
 				timeFormat: 'H:mm'
@@ -41,6 +45,9 @@
 	</a>
 </h2> 
 
-<div id='calendar'></div>
+<div class="col-xs-12">
+	<div id='calendar'>
+	</div>
+</div>
 
 {% endblock %}
