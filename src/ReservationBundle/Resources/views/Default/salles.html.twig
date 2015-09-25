@@ -7,11 +7,13 @@
 {% block body %}
 <h1 class="text-center">Liste des salles </h1>
 
+{% if is_granted('ROLE_ADMIN') or app.user('admin') %}
 <h2 class="text-center">
 	<a href="{{ path('reservationbundle_ajouter') }}" />
 		<button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Ajouter une salle</button>
 	</a>
 </h2>
+{% endif %}
 
 <div class="container">
     <div id="products" class="row list-group">
@@ -27,9 +29,11 @@
 			<i> {{ salle.capacite }} personnes</i>
 			<p> {{ salle.description }} </p>			
 			<td> <a href="{{ path('reservationbundle_voir', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> Voir</button></a> </td>
-			<td> <a href="{{ path('reservationbundle_edit', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> Modifier</button></a> </td>
 			<td> <a href="{{ path('reservationbundle_reserverSalle', {'id' : salle.id}) }}"  ><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-calendar"></span> Réserver</button></a> </td>
+			{% if is_granted('ROLE_ADMIN') or app.user('admin') %}
+			<td> <a href="{{ path('reservationbundle_edit', {'id' : salle.id}) }}" /><button type="button" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span> Modifier</button></a> </td>
 			<td> <a href="{{ path('reservationbundle_supprimer', {'id' : salle.id}) }}" /><button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></button></a> </td>
+			{% endif %}
 		</div>
 	{% endfor %}
 	</div>

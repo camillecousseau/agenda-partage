@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -81,6 +82,7 @@ class DefaultController extends Controller
     /**
      * @Route("/salles/ajouter", name="reservationbundle_ajouter")
      * @Template()
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function ajouterAction(Request $request)
     {		

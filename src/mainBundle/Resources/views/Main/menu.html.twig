@@ -13,9 +13,12 @@
           <ul class="nav navbar-nav">
             <li class="{{ 'index' == current ? 'active' : '' }}"><a href="{{ path('reservationbundle_index') }}">Home</a></li>
             <li class="{{ 'salle' == current ? 'active' : '' }}"><a href="{{ path('reservationbundle_salles') }}">Salles</a></li>
+            {% if is_granted('ROLE_ADMIN') or app.user('admin') %}
             <li class="{{ 'reservation' == current ? 'active' : '' }}"><a href="{{ path('reservationbundle_reservations') }}">Réservations</a></li>
+            {% endif %}
             <li class="{{ 'reserver' == current ? 'active' : '' }}"><a href="{{ path('reservationbundle_reserver') }}">Réserver</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
+       {{ render(controller('FOSUserBundle:Security:login')) }}
     </nav>
